@@ -7,6 +7,7 @@ import Image from "next/image";
 import { SignInButton } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 import { Spinner } from "@/components/spinner";
+import Logo from "@/components/logo";
 
 function Main() {
   const { resolvedTheme } = useTheme();
@@ -55,24 +56,7 @@ function Main() {
           className="mix-blend-multiply self-center"
         />
         <div className="flex items-center w-full p-6 bg-transparent z-50 dark:bg-[#020817] absolute bottom-0">
-          <div className="hidden md:block">
-            <Image
-              src="/icons/logo.png"
-              alt="Bottry"
-              width={40}
-              height={40}
-              priority
-              className="dark:hidden"
-            />
-            <Image
-              src="/icons/logo-dark.png"
-              alt="Bottry"
-              width={40}
-              height={40}
-              priority
-              className="hidden dark:block"
-            />
-          </div>
+          <Logo />
           <div className="md:ml-auto w-full justify-between md:justify-end flex items-center gap-x-2 text-muted-foreground">
             <Button variant={"ghost"} size={"sm"}>
               Privacy policy

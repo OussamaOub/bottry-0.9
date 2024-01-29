@@ -1,4 +1,5 @@
 "use client";
+import Logo from "@/components/logo";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { useScrollTop } from "@/hooks/useScrollTop";
@@ -20,25 +21,8 @@ function Navbar() {
           "border-b border-gray-300 dark:border-gray-700 bg-[#fff] dark:bg-[#020817] "
       )}
     >
-      <Link href="/">
-        <div className="hidden md:block ml-16">
-          <Image
-            src="/icons/logo.png"
-            alt="Bottry"
-            width={40}
-            height={40}
-            priority
-            className="dark:hidden"
-          />
-          <Image
-            src="/icons/logo-dark.png"
-            alt="Bottry"
-            width={40}
-            height={40}
-            priority
-            className="hidden dark:block"
-          />
-        </div>
+      <Link href="/" className="ml-4">
+        <Logo />
       </Link>
       <div className="flex gap-x-12 mx-auto md:mr-16">
         {isAuthenticated ? (

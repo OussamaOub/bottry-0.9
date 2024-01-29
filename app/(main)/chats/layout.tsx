@@ -1,23 +1,17 @@
-"use client";
-import { Spinner } from "@/components/spinner";
-import { useConvexAuth } from "convex/react";
-import { useRouter } from "next/navigation";
-import React from "react";
+import { Navigation } from "../_components/navigation";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useConvexAuth();
-  const router = useRouter();
-  if (isLoading) {
-    return (
-      <div className="h-full w-full flex items-center justify-center">
-        <Spinner size={"lg"} />
-      </div>
-    );
-  }
-  if (!isLoading && !isAuthenticated) {
-    router.push("/");
-  }
-  return <>{children}</>;
+  return (
+    <div className="h-full flex dark:bg-[#020817]">
+      <Navigation />
+      <main className="flex-1 h-full overflow-y-auto">
+        {/* <SearchCommand /> */}
+        {/* <ModalProvider /> */}
+
+        {children}
+      </main>
+    </div>
+  );
 }
 
 export default Layout;
