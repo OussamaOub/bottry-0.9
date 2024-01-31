@@ -18,23 +18,21 @@ function UserItem() {
   }
   return (
     <Popover>
-      <PopoverTrigger className="mt-auto py-2 pb-3 rounded-t-lg w-full hover:bg-primary/20 transition-all duration-300 flex items-center justify-start pl-4 gap-x-4">
-        <div>
-          <Image
-            alt="pfp"
-            src={user?.imageUrl ?? "/icons/user-icon.png"}
-            width={30}
-            height={30}
-            className="rounded-full dark:hidden"
-          />
-          <Image
-            alt="pfp"
-            src={user?.imageUrl ?? "/icons/user-icon-dark.png"}
-            width={30}
-            height={30}
-            className="rounded-full hidden dark:block"
-          />
-        </div>
+      <PopoverTrigger className="border-t border-primary/10 mt-auto py-2 pb-3 rounded-t-lg w-full hover:bg-primary/20 transition-all duration-300 flex items-center justify-start pl-4 gap-x-4">
+        <Image
+          alt="pfp"
+          src={user?.imageUrl ?? "/icons/user-icon.png"}
+          width={30}
+          height={30}
+          className="rounded-full dark:hidden"
+        />
+        <Image
+          alt="pfp"
+          src={user?.imageUrl ?? "/icons/user-icon-dark.png"}
+          width={30}
+          height={30}
+          className="rounded-full hidden dark:block"
+        />
         <div>{user?.firstName}</div>
       </PopoverTrigger>
       <PopoverContent className="z-[99999] w-[calc(100vw-50px)] md:w-[200px] dark:bg-[#202123] p-0">

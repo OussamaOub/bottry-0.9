@@ -1,13 +1,32 @@
 import Logo from "@/components/logo";
-import { Button } from "@/components/ui/button";
+import { api } from "@/convex/_generated/api";
+import { useMutation } from "convex/react";
 import { EditIcon } from "lucide-react";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 function NewChat() {
+  const create = useMutation(api.documents.createDocument);
+  const router = useRouter();
+
+  const handleCreate = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const promise = create().then((docId) => {
+      router.push(`/chats/${docId}`);
+    });
+    toast.promise(promise, {
+      loading: "Creating...",
+      success: "Created!",
+      error: "Failed to create.",
+    });
+  };
+
   return (
     <div className="flex w-full items-center justify-center">
       <div
+        onClick={handleCreate}
         role="button"
         className="flex items-center rounded-lg transition-all w-[90%] duration-300 py-[6px] bg-transparent hover:bg-primary/20 text-foreground mt-3"
       >

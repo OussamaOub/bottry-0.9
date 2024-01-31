@@ -1,59 +1,27 @@
 "use client";
 
-import {
-  ChevronsLeft,
-  MenuIcon,
-  Plus,
-  PlusCircle,
-  Search,
-  Settings,
-  Trash,
-} from "lucide-react";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { ChevronsLeft, MenuIcon } from "lucide-react";
+import { useParams, usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { useMutation } from "convex/react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
-import { api } from "@/convex/_generated/api";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
 import NewChat from "./new-chat";
 import UserItem from "./user-item";
-// import { useSettings } from "@/hooks/useSetting";
-// import { useSearch } from "@/hooks/useSearch";
-// import UserItem from "./userItem";
-// import { Item } from "./Item";
-// import DocumentList from "./document-list";
-// import TrashBox from "./trashbox";
-// import Navbar from "./navbar";
-// import { useSearch } from "@/hooks/use-search";
-// import { useSettings } from "@/hooks/use-settings";
-
-// import { UserItem } from "./user-item";
-// import { Item } from "./item";
-// import { DocumentList } from "./document-list";
-// import { TrashBox } from "./trash-box";
-// import { Navbar } from "./navbar";
+import ChatList from "./chat-list";
+import Navbar from "./navbar";
 
 export const Navigation = () => {
-  const router = useRouter();
-  //   const settings = useSettings();
-  //   const search = useSearch();
-  const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  //   const create = useMutation(api.documents.create);
 
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+  const params = useParams<{ docId: string }>();
 
   useEffect(() => {
     if (isMobile) {
@@ -130,14 +98,6 @@ export const Navigation = () => {
     }
   };
 
-  const handleCreate = () => {
-    // const promise = create({ title: "Untitled" }).then((documentId) =>
-    //   router.push(`/documents/${documentId}`)
-    // );
-
-    toast.success("Document created");
-  };
-
   return (
     <>
       <aside
@@ -152,22 +112,15 @@ export const Navigation = () => {
           onClick={collapse}
           role="button"
           className={cn(
-            "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-1/2 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
+            "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute bottom-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
             isMobile && "opacity-100"
           )}
         >
           <ChevronsLeft className="h-6 w-6" />
         </div>
-        <div>
-          <NewChat />
-          {/* <Item label="Search" icon={Search} isSearch onClick={search.onOpen} /> */}
-          {/* <Item
-            isSettings
-            label="Settings"
-            icon={Settings}
-            onClick={settings.onOpen}
-          /> */}
-          {/* <Item onClick={handleCreate} label="New page" icon={PlusCircle} /> */}
+        <NewChat />
+        <div className="flex-grow overflow-y-auto border-t border-primary/10">
+          <ChatList />
         </div>
         <UserItem />
         <div
@@ -185,19 +138,20 @@ export const Navigation = () => {
         )}
       >
         <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed && (
-            <MenuIcon
-              onClick={resetWidth}
-              role="button"
-              className="h-6 w-6 text-muted-foreground"
-            />
+          {!!params.docId ? (
+            <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+          ) : (
+            <nav className="bg-transparent px-3 py-2 w-full">
+              {isCollapsed && (
+                <MenuIcon
+                  onClick={resetWidth}
+                  role="button"
+                  className="h-6 w-6 text-muted-foreground"
+                />
+              )}
+            </nav>
           )}
         </nav>
-
-        {/* {!!params.docId ? (
-          <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
-        ) : (
-        )} */}
       </div>
     </>
   );

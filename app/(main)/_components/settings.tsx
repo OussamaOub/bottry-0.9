@@ -1,6 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useChatParams } from "@/hooks/useChatParams";
+import { cn } from "@/lib/utils";
 import { RefreshCw, Settings2Icon } from "lucide-react";
 import React from "react";
 
@@ -24,7 +25,9 @@ function SettingsSection() {
         role="button"
         className="transition flex items-center justify-start gap-4 w-full hover:bg-neutral-300 dark:hover:bg-[#343541] m-0 rounded-md text-sm py-3 px-2"
       >
-        <DialogTrigger className="flex items-center justify-start gap-4 w-full">
+        <DialogTrigger
+          className={cn("flex items-center justify-start gap-4 w-full")}
+        >
           <Settings2Icon size={20} />
           <span className="text-sm text-foreground font-semibold">
             Settings
