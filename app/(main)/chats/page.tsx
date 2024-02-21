@@ -1,6 +1,6 @@
 "use client";
 import Logo from "@/components/logo";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Suggestions from "../_components/suggestions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,6 +19,7 @@ function Chats() {
   const ismobile = useMediaQuery("(max-width: 640px)");
   const create = useMutation(api.documents.createDocument);
   const createuserChat = useMutation(api.chat.createPrompt);
+  const inputref = useRef<HTMLTextAreaElement>(null);
   const createOpenAIChat = useAction(api.openai.chat);
   const {
     frequency_penalty,
@@ -30,29 +31,10 @@ function Chats() {
   } = useChatParams();
   const router = useRouter();
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && e.shiftKey) {
-        e.preventDefault();
-        setValue((prev) => prev + "\n");
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        handleSend();
-      }
-    };
-    window.addEventListener("keydown", down);
-    return () => window.removeEventListener("keydown", down);
-  }, []);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setValue(e.target.value);
-
-    const numberOfLines = e.target.value.split("\n").length;
-    const newHeight = `${Math.max(2, numberOfLines) * 20}px`;
-
-    setTextareaHeight(newHeight);
   };
 
   const handleSend = () => {
@@ -89,13 +71,23 @@ function Chats() {
         <Suggestions />
         <div className="flex items-center mb-4 justify-center">
           <Textarea
+            ref={inputref}
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+                inputref.current?.focus();
+              }
+            }}
             placeholder="Ask a question"
             value={value}
             disabled={isSending}
             onChange={handleChange}
-            style={{ height: textareaHeight }}
+            rows={2}
+            maxRows={5}
             className={cn(
-              "w-1/2 resize-none mx-2 min-h-[45px] max-h-[250px] p-[10px] bg-transparent border-muted-foreground/50"
+              "w-1/2 resize-none mx-2 bg-transparent border-muted-foreground/50 h-fit"
             )}
           />
           <Button

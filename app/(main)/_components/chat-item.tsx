@@ -1,12 +1,18 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
+import { PopoverContent } from "@radix-ui/react-popover";
 import { useMutation } from "convex/react";
-import { Trash2Icon } from "lucide-react";
+import { MoreHorizontalIcon, Trash2Icon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import ProfileSection from "./profile";
+import SettingsSection from "./settings";
+import LogoutSection from "./logout";
 
 type ParamsProps = {
   docId: string;
@@ -107,12 +113,32 @@ function ChatItem({ doc }: { doc: Doc<"documents"> }) {
             onKeyDown={(e) => onKeyDown(e, doc)}
           />
         ) : (
-          <span className="text-sm ml-2" onClick={(e) => enableInput(e, doc)}>
-            {doc.title}
-          </span>
+          <span className="text-sm ml-2">{doc.title}</span>
         )}
       </div>
       <div className="flex items-center">
+        <span>
+          <Popover>
+            <PopoverTrigger
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="hidden group-hover/document:block p-1 rounded-lg w-full hover:bg-primary/20 transition-all duration-300 items-center justify-start"
+            >
+              <MoreHorizontalIcon className="w-4 h-4" />
+            </PopoverTrigger>
+            <PopoverContent className="z-[99999] rounded-lg p-2 text-white">
+              {/* Renaming section */}
+              <div
+                role="button"
+                onClick={(e) => enableInput(e, doc)}
+                className="transition-all duration-300 flex items-center bg-zinc-500 dark:bg-zinc-800 hover:bg-zinc-600 dark:hover:bg-zinc-900 p-2 rounded-lg "
+              >
+                Rename chat
+              </div>
+            </PopoverContent>
+          </Popover>
+        </span>
         <span
           onClick={(e) => handleArchive(e, doc._id)}
           className="text-sm ml-2 hidden group-hover/document:block hover:text-red-500 transition-all duration-300 bg-neutral-100/10 p-1 rounded-full"

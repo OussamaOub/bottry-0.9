@@ -29,7 +29,7 @@ export const useChatParams = create<ChatParamsProps>()(
       n: 1,
       presence_penalty: 0.0,
       temperature: 0.6,
-      model: "gpt-3.5-turbo-16k",
+      model: "gpt-3.5-turbo-1106",
       setFrequencyPenalty: (frequency_penalty: number) =>
         set({ frequency_penalty }),
       setMaxTokens: (max_tokens: number) => set({ max_tokens }),
