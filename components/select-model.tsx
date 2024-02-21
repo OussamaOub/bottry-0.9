@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { ReactAction } from "convex/react";
 import { FunctionReference } from "convex/server";
 
-function SelectModel({ models }: { models: Model[] | undefined }) {
+function SelectModel({ models }: { models: string[] | undefined }) {
   const { model, setModel } = useChatParams();
 
   return (
@@ -25,14 +25,14 @@ function SelectModel({ models }: { models: Model[] | undefined }) {
         <SelectGroup>
           {models?.map((mod, index) => (
             <SelectItem
-              value={mod.id}
+              value={mod}
               key={index}
-              disabled={mod.id === model}
+              disabled={mod === model}
               className={cn(
                 "truncate disabled:font-bold disabled:cursor-not-allowed text-foreground"
               )}
             >
-              {mod.id}
+              {mod}
             </SelectItem>
           ))}
         </SelectGroup>

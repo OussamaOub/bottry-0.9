@@ -26,7 +26,7 @@ function Main() {
               a chat, Bottry has you covered.
             </p>
           </span>
-          <div>
+          <div className="mt-12">
             {isLoading && <Spinner size={"default"} />}
 
             {!isLoading && !isAuthenticated && (
@@ -39,7 +39,7 @@ function Main() {
 
             {!isLoading && isAuthenticated && (
               <Link href="/chats">
-                <Button className="rounded-full w-fit" size="lg">
+                <Button className="rounded-full w-fit mt-8" size="lg">
                   Enter Bottry
                 </Button>
               </Link>
@@ -68,7 +68,7 @@ function Main() {
         </div>
       </div>
       <div className="w-full absolute inset-0 h-full">
-        <SparklesCore
+        {/* <SparklesCore
           id="tsparticlesfullpage"
           background="transparent"
           minSize={0.6}
@@ -76,7 +76,7 @@ function Main() {
           particleDensity={100}
           className="w-full h-full -z-50"
           particleColor={resolvedTheme === "dark" ? "#ffffff" : "#000000"}
-        />
+        /> */}
       </div>
     </>
   );

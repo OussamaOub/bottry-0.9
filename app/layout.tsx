@@ -3,8 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import AuthProvider from "@/components/providers/auth-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster } from "sonner";
+// import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -44,15 +43,15 @@ export default function RootLayout({
             fontSans.variable
           )}
         >
-          <ThemeProvider
+          {/* <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
             storageKey="bottry-theme"
-          >
-            {children}
-          </ThemeProvider>
+          > */}
+          {children}
+          {/* </ThemeProvider> */}
         </body>
       </AuthProvider>
     </html>

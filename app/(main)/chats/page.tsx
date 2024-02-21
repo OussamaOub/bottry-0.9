@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "usehooks-ts";
-import { useMutation } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useChatParams } from "@/hooks/useChatParams";
 
 function Chats() {
   const [value, setValue] = useState("");
@@ -17,6 +18,16 @@ function Chats() {
   const [isSending, setIsSending] = useState(false);
   const ismobile = useMediaQuery("(max-width: 640px)");
   const create = useMutation(api.documents.createDocument);
+  const createuserChat = useMutation(api.chat.createPrompt);
+  const createOpenAIChat = useAction(api.openai.chat);
+  const {
+    frequency_penalty,
+    max_tokens,
+    model,
+    n,
+    presence_penalty,
+    temperature,
+  } = useChatParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -47,12 +58,25 @@ function Chats() {
   const handleSend = () => {
     if (value.length === 0) return;
     setIsSending(true);
-    const promise = create().then((docId) => router.push(`/chats/${docId}`));
-    toast.promise(promise, {
-      loading: "Creating chat...",
-      success: "Chat created!",
-      error: "Error creating chat",
-      finally: () => setIsSending(false),
+
+    create().then((docId) => {
+      createOpenAIChat({
+        documentId: docId,
+        newMsg: value,
+        params: {
+          model,
+          max_tokens,
+          frequency_penalty,
+          presence_penalty,
+          temperature,
+          n,
+        },
+      })
+        .then(() => {
+          handleChange({ target: { value: "" } } as any);
+          setIsSending(false);
+        })
+        .then(() => router.push(`/chats/${docId}`));
     });
   };
 

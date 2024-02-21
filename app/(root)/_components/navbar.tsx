@@ -6,12 +6,13 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { cn } from "@/lib/utils";
 import { SignInButton } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
+import { LoaderIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 function Navbar() {
   const scrolled = useScrollTop();
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
   return (
     <div
@@ -25,7 +26,12 @@ function Navbar() {
         <Logo />
       </Link>
       <div className="flex gap-x-12 mx-auto md:mr-16">
-        {isAuthenticated ? (
+        {isLoading && (
+          <div className="flex items-center justify-center">
+            <LoaderIcon className="w-6 h-6 text-foreground animate-spin" />
+          </div>
+        )}
+        {!isLoading && isAuthenticated ? (
           <Link href="/chats">
             <Button className="rounded-full" size="lg">
               Enter Bottry
